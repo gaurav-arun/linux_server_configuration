@@ -7,9 +7,9 @@ Udacity FSND Linux Server Configuration Project
   - `ssh` on `port 2200`
   - `http` on `port 80`
   - `ntp` on `port 123`
-4. Use Apache and mod_wsgi for handling user requests and delegating it to the app.
+4. Use Apache and mod_wsgi for handling user requests.
 5. Configure and use postgresql as database server.
-6. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project on this instance. 
+6. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project to use WSGI on cloud instance. 
 
 ### Create Linux instance on Amazon Lightsail
 1. Create an amazon lightsail account [here](https://lightsail.aws.amazon.com)
@@ -78,5 +78,66 @@ User grader may run the following commands on ip-172-26-6-175.ap-south-1.compute
 ssh -i ~/.ssh/fsnd_grader grader@<static_ip>
 ```
 >If pop window appears, enter password as `grader`
+
+## Configure `ufw` firewall for Cloud Instance
+1. First step is to disable default ssh port 22 and configure ssh server to use port 2200. Open file `sudo nano /etc/ssh/sshd_config`, **change the port number on line 5 to 2200**, then **restart SSH** by running `sudo service ssh restart`
+
+2. Check the status of ufw using `sudo ufw status`. It should show `inactive`.
+3. Use the following sequence of command to configure the firewall
+```
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+sudo ufw deny 22
+sudo ufw allow 2200/tcp
+sudo ufw allow www
+sudo ufw allow 123/udp
+sudo ufw enable
+```
+Firstly, we deny all incoming connection and allow all outgoing connections. We block `port 22` for default ssh connection and configure `port 2200` to allow tcp traffic. Since we have already configured ssh to use port 2200, all ssh connection will happen on this port going forward. We allow http traffic on default `port 80` and udp traffic on `port 123` for ntp.
+
+Finally, we put all this ufw configuration in effect by enable ufw.
+Run `sudo ufw status` to verify. It is configured for both IPv4 and IPv6.
+```
+To                         Action      From
+--                         ------      ----
+22                         DENY        Anywhere                  
+2200/tcp                   ALLOW       Anywhere                  
+80/tcp                     ALLOW       Anywhere                  
+123/udp                    ALLOW       Anywhere                  
+22 (v6)                    DENY        Anywhere (v6)             
+2200/tcp (v6)              ALLOW       Anywhere (v6)             
+80/tcp (v6)                ALLOW       Anywhere (v6)             
+123/udp (v6)               ALLOW       Anywhere (v6)  
+```
+
+### Verify open ports on Cloud instance from the Local Machine
+```
+sudo nmap -Pn <static_ip>
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2019-08-20 01:36 IST
+Nmap scan report for ec2-13-234-235-47.ap-south-1.compute.amazonaws.com (13.234.235.47)
+Host is up (0.026s latency).
+Not shown: 998 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+2200/tcp open  ici
+
+Nmap done: 1 IP address (1 host up) scanned in 8.26 seconds
+```
+
+```
+sudo nmap  -sU -T4 -Pn <static_ip>
+
+Host is up (0.023s latency).
+Not shown: 999 open|filtered ports
+PORT    STATE SERVICE
+123/udp open  ntp
+```
+
+
+
+
+
 
 
