@@ -7,9 +7,9 @@ Udacity FSND Linux Server Configuration Project
   - `ssh` on `port 2200`
   - `http` on `port 80`
   - `ntp` on `port 123`
-4. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project on this instance. 
-5. Use Apache and mod_wsgi for handling user requests and delegating it to the app.
-6. Configure and use postgresql as database server.
+4. Use Apache and mod_wsgi for handling user requests and delegating it to the app.
+5. Configure and use postgresql as database server.
+6. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project on this instance. 
 
 ### Create Linux instance on Amazon Lightsail
 1. Create an amazon lightsail account [here](https://lightsail.aws.amazon.com)
