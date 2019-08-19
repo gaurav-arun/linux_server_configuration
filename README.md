@@ -31,7 +31,7 @@ Udacity FSND Linux Server Configuration Project
 2. Enter password as `grader`
 3. Switch to user grader `su --login grader`. You will be required to enter the password.
 
-## Give grader sudo permissions
+## Give `grader` sudo permissions
 
 1. Go back to the default user `ubuntu` by typing `exit`
 2. Create a file `grader` in `/etc/sudoers.d` using  `sudo touch /etc/sudoers.d/grader`
@@ -70,8 +70,8 @@ User grader may run the following commands on ip-172-26-6-175.ap-south-1.compute
 
 ### Disable tunnelled clear text passwords on Cloud Instance
 1. Run `nano /etc/ssh/sshd_config` and search for keyword `PasswordAuthentication`
-2. Change `yes` to `no` if required using `PasswordAuthentication no`.
-3  Run `sudo service ssh restart`
+2. Change `yes` to `no` if required, by changing line to `PasswordAuthentication no`
+3. Run `sudo service ssh restart`
 
 ### Log in as grader from Local Machine
 ```
@@ -96,7 +96,8 @@ sudo ufw enable
 ```
 Firstly, we deny all incoming connection and allow all outgoing connections. We block `port 22` for default ssh connection and configure `port 2200` to allow tcp traffic. Since we have already configured ssh to use port 2200, all ssh connection will happen on this port going forward. We allow http traffic on default `port 80` and udp traffic on `port 123` for ntp.
 
-Finally, we put all this ufw configuration in effect by enable ufw.
+Finally, we put all this ufw configuration in effect by enabling ufw.
+
 Run `sudo ufw status` to verify. It is configured for both IPv4 and IPv6.
 ```
 To                         Action      From
@@ -111,7 +112,7 @@ To                         Action      From
 123/udp (v6)               ALLOW       Anywhere (v6)  
 ```
 
-### Verify open ports on Cloud instance from the Local Machine
+### (OPTIONAL) Verify open ports on Cloud instance from the Local Machine
 ```
 sudo nmap -Pn <static_ip>
 
