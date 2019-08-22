@@ -52,11 +52,12 @@ User grader may run the following commands on ip-172-26-6-175.ap-south-1.compute
     (ALL : ALL) ALL
 ```
 
-## Allow `grader` to log in to the cloud instance
+## Enable remote login to the cloud instance as `grader`
+We need to generate a ssh key pair on the local machine and add the public key to the `~/.ssh/authorized_keys` for `grader` on cloud instance.
 
 ### Steps on Local Machine
 1. Run `ssh-keygen` on your local machine
-2. Choose a file name for the key pair `fsnd_grader`
+2. Choose a file name for the key pair - `fsnd_grader`
 3. Enter passphrase as `grader`
 4. Two files will be created in your local machine `~/.ssh` directory : `fsnd_grader` and `fsnd_grader.pub`
 5. Install xclip on your local machine using `sudo apt-get install xclip`
