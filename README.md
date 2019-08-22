@@ -7,7 +7,7 @@ Udacity FSND Linux Server Configuration Project
   - `ssh` on `port 2200`
   - `http` on `port 80`
   - `ntp` on `port 123`
-4. Use Apache and mod_wsgi for handling user requests.
+4. Use Apache and mod_wsgi for handling user http requests.
 5. Configure and use postgresql as database server.
 6. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project to use WSGI on cloud instance. 
 
@@ -25,6 +25,8 @@ Udacity FSND Linux Server Configuration Project
 ### First Login into linux instance
 1. Run `chmod 600 ~/.ssh/udacity_fsnd.rsa` to restrict the permissions.
 2. ssh into the linux instance using `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@<your_static_ip>`
+3. Run `sudo apt-get update` to download and update the package lists for all the repositories and PPAs.
+4. Run `sudo apt-get upgrade` to upgrade all the packages and their dependencies to the newest version.
 
 ## Create a new user `grader` with sudo permissions
 1. Run `sudo adduser grader`
@@ -71,9 +73,9 @@ User grader may run the following commands on ip-172-26-6-175.ap-south-1.compute
 ### Disable tunnelled clear text passwords on Cloud Instance
 1. Run `nano /etc/ssh/sshd_config` and search for keyword `PasswordAuthentication`
 2. Change `yes` to `no` if required, by changing line to `PasswordAuthentication no`
-3. Run `sudo service ssh restart`
+3. Run `sudo service ssh restart` for the changes to take effect.
 
-### Log in as grader from Local Machine
+### Log in as `grader` from Local Machine
 ```
 ssh -i ~/.ssh/fsnd_grader grader@<static_ip>
 ```
@@ -135,6 +137,7 @@ Not shown: 999 open|filtered ports
 PORT    STATE SERVICE
 123/udp open  ntp
 ```
+
 
 
 
