@@ -7,9 +7,9 @@ Udacity FSND Linux Server Configuration Project
   - `ssh` on `port 2200`
   - `http` on `port 80`
   - `ntp` on `port 123`
-4. Use Apache and mod_wsgi for handling user http requests.
-5. Configure and use postgresql as database server.
-6. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project to use WSGI on cloud instance. 
+4. Configure and use postgresql as database server for Item Catalog App.
+5. Use Apache and mod_wsgi for handling user http requests.
+6. Deploy [CatalotApp](https://github.com/grathore07/item_catalog_app.git) project to use WSGI on cloud instance.
 
 ### Create Linux instance on Amazon Lightsail
 1. Create an amazon lightsail account [here](https://lightsail.aws.amazon.com)
@@ -300,3 +300,9 @@ application.secret_key = 'supersecretkey'
 
 This file activates the `item_catalog_env` first. Then it configures the logger. Finally, it imports `item_catalog_app` as a python package which in turn instantiates the flask app and mod_wsgi takes over from this point.
 
+## Configure Google OAuth (OPTIONAL)
+Google OAuth requires you to provide a list  of `Authorized Javascript Origin` and `Authorized redirect URIs` to avoid CORS vulnerability. Follow these steps:
+1. Attach a domain name to your `static_ip` using free dynamic dns service like `www.no-ip.com`. Copy this domain name.
+2. Log in to your google developer console. Find the web client you have configured for Item Catalog app.
+3. Paste the domain name to both `Authorized Javascript Origin` and `Authorized redirect URIs`.
+4. Save your changes.
