@@ -219,4 +219,84 @@ python3 db_bootstrap.py
 python3 main.py
 ```
 Executing `database_setup.py` connects to postgresql and creates the `User` and `Item` tables in the `catalogapp` database.
-Then `db_bootstrap.py` populates the database with random items and users. Finally running `main.py` should launch the app without any errors.
+Then `db_bootstrap.py` populates the database with random items and users. Finally running `main.py` should launch the app without any errors. **After verifying, follow steps 7 and 8 to make wsgi configuration easier.**
+
+7. Move `main.py` to `__init__.py`.
+```
+sudo rm __init__.py
+sudo mv main.py __init__.py
+```
+8. Change line `app.run('0.0.0.0', port=5000)` to `app.run()` in `__init__.py` file.
+
+## Install `Apache`
+1. `sudo apt-get install apache2`
+2. Enter the `static_ip` in your web browser to verify that apache is installed. We should be able to see default apache web page.
+3. After verifying, run `sudo a2dissite 000-default.conf` to disable apache site.
+4. Restart the apache server with `sudo service apache2 reload`
+
+## Install `mod_wsgi`
+1. `sudo apt-get install libapache2-mod-wsgi-py3 python3-dev`
+2. Enable mod_wsgi by running `sudo a2enmod wsgi`
+
+
+### Setup Apache service
+1. Create a configuration file `item_catalog_app.conf` in `/etc/apache2/sites-available/` with the following content:
+```
+<VirtualHost *:80>
+                Servername <static_ip>
+                ServerAdmin <your@email.id>
+                WSGIScriptAlias / /var/www/item_catalog_app.wsgi
+                <Directory /var/www/item_catalog_app/>
+                        Order allow,deny
+                        Allow from all
+                        Options -Indexes
+                </Directory>
+                Alias /static /var/www/item_catalog_app/static
+                <Directory /var/www/item_catalog_app/static/>
+                        Order allow,deny
+                        Allow from all
+                        Options -Indexes
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+Here `static_ip` is our static ip address and `your@email.id` is our email address.
+
+2. Run `sudo a2ensite item_catalog_app` to enable apache server.
+
+3. Run `sudo service apache2 reload` to restart apache server
+
+
+### Setup mod_wsgi as WSGI for Item Catalog app
+1. cd into `/var/www`
+2. Create a wsgi file using `sudo nano item_catalog_app.wsgi`.
+3. Add following lines to wsgi file
+```
+# Activate virtual environment for running the app
+python_home = '/var/www/item_catalog_app/item_catalog_env'
+activate_this = python_home + '/bin/activate_this.py'
+with open(activate_this) as file_:
+    exec(file_.read(), dict(__file__=activate_this))
+
+import logging
+import os
+import sys
+
+logging.basicConfig(stream=sys.stderr)
+os.chdir('/var/www')
+
+
+# Add path to the application so that various files
+# can be found by python.
+sys.path.insert(0, "/var/www/item_catalog_app/")
+sys.path.insert(0, "/var/www/")
+
+# Create app instance and let mod_wsgi handle it.
+from item_catalog_app import app as application
+application.secret_key = 'supersecretkey'
+```
+
+This file activates the `item_catalog_env` first. Then it configures the logger. Finally, it imports `item_catalog_app` as a python package which in turn instantiates the flask app and mod_wsgi takes over from this point.
+
