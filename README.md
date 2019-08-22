@@ -182,7 +182,41 @@ First we create a `catalogapp` user with ability to create databases. Then we se
 4. Run `\l` to see that the new database has been created.
 5. Finally we can exit out of postgresql prompt using `\q`.
 
+## Install git and python3
+1. `sudo apt-get install git`
+2. `sudo apt-get install python3`
 
+## Configure Item Catalog app to use `postgresql` as database server
+1. Chage directory to `/var/www` using `cd /var/www`
 
+2. Clone [CatalogApp](https://github.com/grathore07/item_catalog_app) using `sudo git clone https://github.com/grathore07/item_catalog_app`
 
+3. Change the following line in all the files that try to connect to database. In my case I changed this line in `main.py`, `database_setup.py` and `db_bootstrap.py`. 
+```
++engine = create_engine("postgresql://catalogapp:catalogapp@localhost/catalogapp")
+```
+Here `catalogapp:catalogapp` is the postgresql `username` and `password` that we created earlier and last `catalogapp`
+is the name of the database to connect to.
 
+4. cd into `/var/www/item_catalog_app` directory. Create a virtual environment `item_catalog_env` for installing all the required python packages and activate it.
+
+```
+sudo pip3 install virtualenv=16.0.0
+virtualenv item_catalog_env
+source item_catalog_env/bin/activate
+```
+
+5. Once the `item_catalog_env` is activated, install all python packages required for running the project using `requirements.txt` file.
+
+```
+pip3 install -r requirements.txt
+```
+
+6. Test run the app to confirm that the app is launching and is able to use `postgresql` as database.
+```
+python3 database_setup.py
+python3 db_bootstrap.py
+python3 main.py
+```
+Executing `database_setup.py` connects to postgresql and creates the `User` and `Item` tables in the `catalogapp` database.
+Then `db_bootstrap.py` populates the database with random items and users. Finally running `main.py` should launch the app without any errors.
