@@ -4,6 +4,7 @@ Udacity FSND Linux Server Configuration Project
 ## Deployed Item Catalog App
 - Open [catalogapp.ddns.net](http://catalogapp.ddns.net). Login using your google account.
 - You can also use the static ip ([http://13.234.235.47](http://13.234.235.47)) to reach the web application. But google login will not work with this approach.
+- SSH login on port 2200 is allowed as user `grader`. 
 
 ## Goals
 1. Deploy a up-to-date linux instance on the cloud.
