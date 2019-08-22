@@ -139,8 +139,48 @@ PORT    STATE SERVICE
 123/udp open  ntp
 ```
 
+## Install and Configure `postgresql` 
+1. Run `sudo apt-get install postgresql`.
 
+### Create a new Linux user called `catalogapp`
 
+1. Create a new Linux user `catalogapp` and provide sudo permissions following the same steps as we did for `grader`
+2. Verify that this new user has been created.
+```
+grader@ip-172-26-6-175:~$ su --login catalogapp
+Password: 
+catalogapp@ip-172-26-6-175:~$ sudo -l
+[sudo] password for catalogapp: 
+Matching Defaults entries for catalogapp on ip-172-26-6-175.ap-south-1.compute.internal:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User catalogapp may run the following commands on ip-172-26-6-175.ap-south-1.compute.internal:
+    (ALL : ALL) ALL
+```
+
+### Configure `postgresql` as database server
+1. Switch to default postgresql user using `sudo -u postgres psql`. Postgres prompt would appear.
+2. Create a new postgresql user for connecting to the database from the `CatalogApp` as follows:
+```
+CREATE ROLE catalogapp WITH LOGIN;
+ALTER ROLE catalog CREATEDB;
+\password catalogapp
+\du
+```
+
+First we create a `catalogapp` user with ability to create databases. Then we set a password for this user(Here it is set to `catalogapp`). Then we check the list of users to verify. We will see the following output.
+
+```
+                                    List of roles
+ Role name  |                         Attributes                         | Member of 
+------------+------------------------------------------------------------+-----------
+ catalogapp | Create DB                                                  | {}
+ postgres   | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+```
+3. Create a database called `catalogapp` by running `createdb catalogapp`
+4. Run `\l` to see that the new database has been created.
+5. Finally we can exit out of postgresql prompt using `\q`.
 
 
 
