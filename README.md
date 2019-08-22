@@ -7,7 +7,7 @@ Udacity FSND Linux Server Configuration Project
 - SSH login on port 2200 is allowed as user `grader`. 
 
 ## Goals
-1. Deploy a up-to-date linux instance on the cloud.
+1. Deploy an up-to-date linux instance on the cloud.
 2. Create an user `grader` with sudo permissions. Only this user should be allowed to perform remote login using ssh.
 3. Secure this instance by configuring the firewall to only allow connections as follows:
   - `ssh` on `port 2200`
@@ -32,7 +32,12 @@ Udacity FSND Linux Server Configuration Project
 1. Run `chmod 600 ~/.ssh/udacity_fsnd.rsa` to restrict the permissions.
 2. ssh into the linux instance using `ssh -i ~/.ssh/lightrail_key.rsa ubuntu@<your_static_ip>`
 3. Run `sudo apt-get update` to download and update the package lists for all the repositories and PPAs.
-4. Run `sudo apt-get upgrade` to upgrade all the packages and their dependencies to the newest version.
+4. Run `sudo apt-get dist-upgrade` to upgrade all the packages and their dependencies to the newest version.
+5. Set up unattended upagrades.
+```
+sudo apt-get install unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades
+```
 
 ## Create a new user `grader` with sudo permissions
 1. Run `sudo adduser grader`
@@ -78,8 +83,8 @@ We need to generate a ssh key pair on the local machine and add the public key t
 6. Set correct permission for authorized_keys using `chmod 644 .ssh/authorized_keys`
 
 ### Disable tunnelled clear text passwords on Cloud Instance
-1. Run `nano /etc/ssh/sshd_config` and search for keyword `PasswordAuthentication`
-2. Change `yes` to `no` if required, by changing line to `PasswordAuthentication no`
+1. Run `nano /etc/ssh/sshd_config` and search for keyword `PasswordAuthentication` and `PermitRootLogin`
+2. Change `yes` to `no` if required, by changing lines to `PasswordAuthentication no` and `PermitRootLogin no`
 3. Run `sudo service ssh restart` for the changes to take effect.
 
 ### Log in as `grader` from Local Machine
