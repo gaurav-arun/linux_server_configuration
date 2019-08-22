@@ -308,10 +308,23 @@ This file activates the `item_catalog_env` first. Then it configures the logger.
 
 ## Configure Google OAuth (OPTIONAL)
 Google OAuth requires you to provide a list  of `Authorized Javascript Origin` and `Authorized redirect URIs` to avoid CORS vulnerability. Follow these steps:
-1. Attach a domain name to your `static_ip` using free dynamic dns service like `www.no-ip.com`. Copy this domain name.
-2. Log in to your google developer console. Find the web client you have configured for Item Catalog app.
+
+1. Attach a domain name to your `static_ip` using free dynamic dns service like `www.no-ip.com`. Other option is to use wildcard DNS provided by [xip.io](http://xip.io/) or [nip.io](http://nip.io/).
+
+Configure `/etc/apache2/sites-enabled/item_catalog_app.conf` by adding the following line:
+```
+ServerAlias 13.234.235.47.xip.io
+```
+
+Restart apache after configuring.
+
+```
+sudo apachectl restart
+```
+2. Copy the domain name configured in step 1. Log in to your google developer console. Find the web client you have configured for Item Catalog app.
 3. Paste the domain name to both `Authorized Javascript Origin` and `Authorized redirect URIs`.
 4. Save your changes.
+
 
 # References:
 1. Stackoverflow
