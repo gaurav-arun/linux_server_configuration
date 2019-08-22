@@ -311,3 +311,9 @@ Google OAuth requires you to provide a list  of `Authorized Javascript Origin` a
 2. Log in to your google developer console. Find the web client you have configured for Item Catalog app.
 3. Paste the domain name to both `Authorized Javascript Origin` and `Authorized redirect URIs`.
 4. Save your changes.
+
+# References:
+1. Stackoverflow
+2. Google
+3. DigitalOcean
+4. https://github.com/blurdylan/linux-server-configuration
