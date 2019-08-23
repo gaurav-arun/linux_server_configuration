@@ -327,7 +327,7 @@ Restart apache after configuring.
 sudo apachectl restart
 ```
 2. Copy the domain name configured in step 1. Log in to your google developer console. Find the web client you have configured for Item Catalog app.
-3. Go to Outh Consent Screen and add the domain name to the list of Authorized domains(If using xip.io or nip.io wilcard domains, you can simply put xip.io or nip.io respectively). Save Changes.
+3. Go to Outh Consent Screen and add the domain name to the list of `Authorized domains` (If using `xip.io` or `nip.io` wilcard domains, you can simply put xip.io or nip.io respectively). Save Changes.
 4. Go to Client ID from Credentials page and paste the domain name into both `Authorized Javascript Origin` and `Authorized redirect URIs`.
 5. Save your changes.
 
